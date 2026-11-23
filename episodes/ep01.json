@@ -1,0 +1,8 @@
+{
+  "scenes": [
+    {"start": 0.00, "end": 4.10, "text": "Nara menemukan dompet berisi lima puluh juta rupiah.", "short": "Nara temukan dompet isi lima puluh juta rupiah."},
+    {"start": 4.10, "end": 7.15, "text": "Ibu harus dioperasi malam ini.", "short": "Ibu perlu operasi malam ini!"},
+    {"start": 7.15, "end": 10.35, "text": "Di dalamnya ada KTP pemilik.", "short": "Ada KTP pemiliknya."},
+    {"start": 10.35, "end": 15.00, "text": "Kembalikan dompet, atau pakai untuk operasi Ibu?", "short": "Kembalikan dompet, atau biayai operasi Ibu?"}
+  ]
+}

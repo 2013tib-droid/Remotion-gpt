@@ -1,0 +1,64 @@
+name: DUA JALAN · Narasi Episode 01
+on:
+  workflow_dispatch:
+    inputs:
+      voice:
+        description: Suara narator
+        type: choice
+        options:
+          - id-ID-ArdiNeural
+          - id-ID-GadisNeural
+        default: id-ID-ArdiNeural
+      scene_01:
+        description: Naskah adegan 01
+        default: Nara menemukan dompet berisi lima puluh juta rupiah.
+        type: string
+      scene_02:
+        description: Naskah adegan 02
+        default: Ibu harus dioperasi malam ini.
+        type: string
+      scene_03:
+        description: Naskah adegan 03
+        default: Di dalamnya ada KTP pemilik.
+        type: string
+      scene_04:
+        description: Naskah adegan 04
+        default: Kembalikan dompet, atau pakai untuk operasi Ibu?
+        type: string
+permissions:
+  contents: read
+jobs:
+  narration:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: |
+          sudo apt-get update
+          sudo apt-get install -y ffmpeg
+          python -m pip install -r requirements.txt
+      - name: Buat dan verifikasi narasi Edge TTS
+        env:
+          DUA_VOICE: ${{ inputs.voice }}
+          DUA_SCENE_01: ${{ inputs.scene_01 }}
+          DUA_SCENE_02: ${{ inputs.scene_02 }}
+          DUA_SCENE_03: ${{ inputs.scene_03 }}
+          DUA_SCENE_04: ${{ inputs.scene_04 }}
+        run: |
+          python scripts/dua_jalan.py tts episodes/ep01.json outputs/narasi
+          python scripts/dua_jalan.py verify outputs/narasi --count 4
+      - uses: actions/upload-artifact@v4
+        with:
+          name: dua-jalan-ep01-narasi
+          if-no-files-found: error
+          path: |
+            outputs/narasi/scene-01.mp3
+            outputs/narasi/scene-02.mp3
+            outputs/narasi/scene-03.mp3
+            outputs/narasi/scene-04.mp3
+            outputs/narasi/timing.csv
