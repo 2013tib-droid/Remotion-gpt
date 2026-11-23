@@ -1,0 +1,49 @@
+name: DUA JALAN · Render Episode 01
+on:
+  pull_request:
+    paths:
+      - 'src/**'
+      - 'public/**'
+      - 'episodes/ep01*.json'
+      - 'scripts/*.py'
+      - 'package*.json'
+      - '.github/workflows/dua-jalan-render.yml'
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: Komposisi yang dirender
+        type: choice
+        options:
+          - fixture
+          - master
+        default: fixture
+permissions:
+  contents: read
+jobs:
+  render:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v6
+        with:
+          node-version: '22'
+          cache: npm
+      - name: Siapkan FFmpeg
+        run: |
+          if ! command -v ffmpeg || ! command -v ffprobe; then
+            sudo apt-get update
+            sudo apt-get install -y ffmpeg
+          fi
+      - run: npm ci
+      - name: Render dan verifikasi MP4 di runner
+        env:
+          RENDER_MODE: ${{ inputs.mode || 'fixture' }}
+        run: |
+          if [[ "$RENDER_MODE" == master ]]; then
+            npm run render:ep01
+          else
+            npm run render:fixture
+          fi

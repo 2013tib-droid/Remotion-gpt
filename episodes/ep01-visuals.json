@@ -1,0 +1,51 @@
+{
+  "title": "Dompet Rp50 Juta",
+  "reference": "assets/ep01/nara-v1.png",
+  "scenes": [
+    {
+      "label": "PENEMUAN",
+      "headline": "Dompet Rp50 Juta",
+      "art": "assets/ep01/scene-01.png",
+      "accent": "#ffce85",
+      "panel": [
+        0,
+        0
+      ]
+    },
+    {
+      "label": "MALAM INI",
+      "headline": "Ibu harus\ndioperasi",
+      "art": "assets/ep01/scene-02.png",
+      "accent": "#ffab92",
+      "panel": [
+        1,
+        0
+      ]
+    },
+    {
+      "label": "IDENTITAS",
+      "headline": "Ada KTP\npemiliknya",
+      "art": "assets/ep01/scene-03.png",
+      "accent": "#ace1cd",
+      "panel": [
+        0,
+        1
+      ]
+    },
+    {
+      "label": "DUA JALAN",
+      "headline": "Apa pilihan Nara?",
+      "art": "assets/ep01/scene-04.png",
+      "accent": "#ffce85",
+      "panel": [
+        1,
+        1
+      ]
+    }
+  ],
+  "choices": [
+    "Kembalikan dompet",
+    "Pakai untuk operasi Ibu"
+  ],
+  "storyboardArt": "assets/ep01/nara-di-antara-dua-jalan.png"
+}

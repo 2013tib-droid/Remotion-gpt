@@ -15,12 +15,25 @@ python -m pip install -r requirements.txt
 python scripts/dua_jalan.py tts episodes/ep01.json outputs/narasi
 ```
 
-## Campur dengan master lokal
+## Render master Remotion
 
-Simpan master di `inputs/DUA-JALAN-EP01-Dompet-Rp50-Juta.mp4`. Untuk Episode 01, gunakan master H.264 vertikal 1080 × 1920, 24 fps, 15 detik, dengan track ambience dan efek.
+Siapkan Node.js 22+, Python 3.10+, FFmpeg, dan ffprobe. Aset Episode 01 dibuat ulang berdasarkan referensi resmi Nara yang diberikan. Potret hasil rekonstruksi ada di `public/assets/ep01/nara-v1.png` dan dipakai sebagai fallback visual. Jika tersedia, simpan empat still vertikal berdasarkan storyboard sebagai `public/assets/ep01/scene-01.png` sampai `scene-04.png`. Still yang tersedia menggantikan gambar referensi pada adegannya dan sebaiknya sudah menampilkan Nara V1 sesuai desain resmi. Simpan gambar empat panel “Nara di antara dua jalan” di `public/assets/ep01/nara-di-antara-dua-jalan.png`. Komposisi memakai panel kiri atas untuk dompet, kanan atas untuk rumah sakit, kiri bawah untuk reaksi Nara, dan kanan bawah untuk ending A/B. PNG adegan tetap dapat menggantikan panel masing-masing. Storyboard Episode 01 ada di `episodes/ep01-storyboard.md`, pengaturan visual di `episodes/ep01-visuals.json`, dan durasi setiap adegan di `episodes/ep01.json`.
 
 ```bash
-python scripts/dua_jalan.py mix inputs/DUA-JALAN-EP01-Dompet-Rp50-Juta.mp4 outputs/narasi outputs/DUA-JALAN-EP01-Dompet-Rp50-Juta-Narasi.mp4 --expect-video 1080x1920@24
+npm ci
+npm run render:ep01
+```
+
+Master muncul di `outputs/DUA-JALAN-EP01-Dompet-Rp50-Juta.mp4` dengan ambience hujan sintetis. Untuk pengujian tanpa gambar resmi, jalankan `npm run render:fixture`. Fixture memakai nama berawalan `FIXTURE-` dan label visual uji. Pratinjau komposisi di `npm run studio`. Jika diperlukan, arahkan `REMOTION_BROWSER_EXECUTABLE` ke executable Chromium.
+
+Workflow **DUA JALAN · Render Episode 01** menguji fixture pada PR dan bisa dijalankan manual dalam mode fixture atau master. Mode master memerlukan aset di checkout runner. MP4 diverifikasi di runner dan tidak diunggah. Render lokal untuk mendapatkan file MP4.
+
+## Campur dengan master lokal
+
+Gunakan master hasil render di `outputs/DUA-JALAN-EP01-Dompet-Rp50-Juta.mp4`. Untuk Episode 01, gunakan master H.264 vertikal 1080 × 1920, 24 fps, 15 detik, dengan track ambience dan efek.
+
+```bash
+python scripts/dua_jalan.py mix outputs/DUA-JALAN-EP01-Dompet-Rp50-Juta.mp4 outputs/narasi outputs/DUA-JALAN-EP01-Dompet-Rp50-Juta-Narasi.mp4 --expect-video 1080x1920@24
 ```
 
 Mixer membaca offset dari CSV, menurunkan ambience saat narasi, dan membatasi puncak audio sebelum encoding AAC. Video H.264 disalin langsung. Codec video lain dikonversi ke H.264 dengan resolusi dan frame rate master. Script memeriksa durasi video dan audio serta mendekode audio hasil sampai akhir. Workflow hanya mengunggah audio narasi dan CSV. Simpan master dan hasil MP4 secara lokal.
