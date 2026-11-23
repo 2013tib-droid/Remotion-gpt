@@ -65,10 +65,15 @@ function Shot({scene, index, fixture, sceneArt}) {
       </AbsoluteFill>
     ) : (
       <AbsoluteFill style={{overflow: 'hidden'}}>
-        <Img src={staticFile(sceneArt ?? visuals.reference)} style={{
-          width: '100%', height: '100%', objectFit: sceneArt ? 'cover' : 'contain',
-          objectPosition: 'center 28%', transform: `scale(${scale})`,
-        }}/>
+        <AbsoluteFill style={{transform: `scale(${scale})`}}>
+          <Img src={staticFile(sceneArt?.file ?? visuals.reference)} style={sceneArt?.panel ? {
+            position: 'absolute', width: '200%', height: '200%',
+            left: `${-100 * sceneArt.panel[0]}%`, top: `${-100 * sceneArt.panel[1]}%`,
+          } : {
+            width: '100%', height: '100%', objectFit: sceneArt ? 'cover' : 'contain',
+            objectPosition: 'center 28%',
+          }}/>
+        </AbsoluteFill>
       </AbsoluteFill>
     )}
     <Rain frame={frame}/>

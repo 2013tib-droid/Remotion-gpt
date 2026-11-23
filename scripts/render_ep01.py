@@ -17,7 +17,15 @@ def render(fixture):
     public = ROOT / "public"
     if not fixture and not (public / visual["reference"]).is_file():
         raise ValueError(f"Gambar resmi Nara V1 diperlukan di public/{visual['reference']}")
-    art = [s["art"] if (public / s["art"]).is_file() else None for s in visual["scenes"]]
+    montage = visual["storyboardArt"]
+    art = []
+    for scene in visual["scenes"]:
+        if (public / scene["art"]).is_file():
+            art.append({"file": scene["art"]})
+        elif (public / montage).is_file():
+            art.append({"file": montage, "panel": scene["panel"]})
+        else:
+            art.append(None)
     out = ROOT / "outputs" / (f"FIXTURE-{FILENAME}" if fixture else FILENAME)
     out.parent.mkdir(exist_ok=True)
     remotion = ROOT / "node_modules/.bin" / ("remotion.cmd" if os.name == "nt" else "remotion")
