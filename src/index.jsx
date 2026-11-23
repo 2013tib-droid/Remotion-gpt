@@ -76,7 +76,7 @@ function Shot({scene, index, fixture, sceneArt}) {
         </AbsoluteFill>
       </AbsoluteFill>
     )}
-    <Rain frame={frame}/>
+    {index !== 1 && <Rain frame={frame}/>}
     <AbsoluteFill style={{
       background: 'linear-gradient(180deg, #08151add, transparent 23%, transparent 41%, #08151af2 76%, #08151a 100%)',
     }}/>
